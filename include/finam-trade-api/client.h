@@ -6,13 +6,15 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include "executor.h"
 using json = nlohmann::json;
 
 
 class FinamApiClient {
 public:
-	FinamApiClient(const std::string& key)
-		: key_(key) {}
+	FinamApiClient(const std::string& key, IExecutor& executor)
+		: key_(key)
+		, executor_(executor) {}
 
 	// Authentification service
 	void TokenDetails();
@@ -57,4 +59,5 @@ private:
 	void Auth();
 	std::string jwt_;
 	std::string key_;
+	IExecutor& executor_;
 };

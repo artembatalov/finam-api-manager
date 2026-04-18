@@ -7,12 +7,14 @@ project(finam-api-manager
         LANGUAGES CXX)
 
 add_library(finam-api-manager src/client.cpp
-        src/executor.cpp)
+        src/executor.cpp
+        src/models.cpp)
 
 target_include_directories(finam-api-manager PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 add_executable(example examples/main.cpp
-        include/finam-trade-api/executor.h)
+        include/finam-trade-api/executor.h
+        include/finam-trade-api/models.h)
 target_link_libraries(example PRIVATE finam-api-manager)
 
 include(FetchContent)
