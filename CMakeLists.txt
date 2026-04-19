@@ -8,13 +8,29 @@ project(finam-api-manager
 
 add_library(finam-api-manager src/client.cpp
         src/executor.cpp
-        src/models.cpp)
+        src/models.cpp
+        src/service_account.cpp
+        src/service_asset.cpp
+        src/service_auth.cpp
+        src/service_data.cpp
+        src/service_metrics.cpp
+        src/service_order.cpp
+        src/service_report.cpp
+)
 
 target_include_directories(finam-api-manager PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 add_executable(example examples/main.cpp
-        include/finam-trade-api/executor.h
-        include/finam-trade-api/models.h)
+        include/finam-api-manager/executor.h
+        include/finam-api-manager/models.h
+        include/finam-api-manager/service_account.h
+        include/finam-api-manager/service_order.h
+        include/finam-api-manager/service_data.h
+        include/finam-api-manager/service_asset.h
+        include/finam-api-manager/service_metrics.h
+        include/finam-api-manager/service_auth.h
+        include/finam-api-manager/service_report.h
+)
 target_link_libraries(example PRIVATE finam-api-manager)
 
 include(FetchContent)

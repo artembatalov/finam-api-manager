@@ -1,9 +1,38 @@
 #include <nlohmann/json.hpp>
 #include <cpr/cpr.h>
 #include <stdexcept>
-#include "finam-trade-api/executor.h"
-#include "finam-trade-api/models.h"
+#include "finam-api-manager/executor.h"
+#include "finam-api-manager/models.h"
 using json = nlohmann::json;
+
+void CheckStatus(int32_t status_code) {
+    switch(status_code) {
+        case 200: {
+            return;
+        }
+        case 401: {
+            throw std::runtime_error("GetJwtToken: 401 Token has expired or the token is invalid!");
+        }
+        case 404: {
+            throw std::runtime_error("GetJwtToken: 404 Account not found in token!");
+        }
+        case 429: {
+            throw std::runtime_error("GetJwtToken: 429 Too many requests. The available limit is 200 requests per minute!");
+        }
+        case 500: {
+            throw std::runtime_error("GetJwtToken: 500 Internal Service Error. Please try again later!");
+        }
+        case 503: {
+            throw std::runtime_error("GetJwtToken: 503 Service is currently unavailable. Please try again later!");
+        }
+        case 504: {
+            throw std::runtime_error("GetJwtToken: 504 The deadline expired before the operation was completed!");
+        }
+        default: {
+            throw std::runtime_error("GetJwtToken: default An unexpected error response!");
+        }
+    }
+}
 
 cpr::Url GetUrl(const Request& req) {
     return cpr::Url{req.url};
@@ -30,6 +59,7 @@ json ExecuteGet(const Request& req) {
         GetHeaders(req),
         GetParameters(req)
     );
+    CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
@@ -85,3 +115,4 @@ json CprExecutor::Execute(const Request& req) {
             throw std::runtime_error("CprExecutor::Execute: Undefined request type");
     }
 }
+

@@ -7,17 +7,21 @@
 #include <vector>
 #include <stdexcept>
 #include "executor.h"
+#include "service_account.h"
+#include "service_asset.h"
+#include "service_auth.h"
+#include "service_data.h"
+#include "service_metrics.h"
+#include "service_order.h"
+#include "service_report.h"
 using json = nlohmann::json;
-
 
 class FinamApiClient {
 public:
 	FinamApiClient(const std::string& key, IExecutor& executor)
 		: key_(key)
-		, executor_(executor) {}
-
-	// Authentification service
-	void TokenDetails();
+		, executor_(executor)
+		, auth_(key, executor) {}
 
 	// Account service
 	void GetAccount();
@@ -56,8 +60,14 @@ public:
 	void GetAccountReportInfo();
 
 private:
-	void Auth();
-	std::string jwt_;
 	std::string key_;
 	IExecutor& executor_;
+
+	AccountService account_;
+	AssetService asset_;
+	AuthService auth_;
+	DataService data_;
+	MetricsService metrics_;
+	OrderService order_;
+	ReportService report_;
 };
