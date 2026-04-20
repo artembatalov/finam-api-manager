@@ -6,16 +6,24 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include "executor.h"
+#include "service_account.h"
+#include "service_asset.h"
+#include "service_auth.h"
+#include "service_data.h"
+#include "service_metrics.h"
+#include "service_order.h"
+#include "service_report.h"
+#include "service_time.h"
 using json = nlohmann::json;
-
 
 class FinamApiClient {
 public:
-	FinamApiClient(const std::string& key)
-		: key_(key) {}
-
-	// Authentification service
-	void TokenDetails();
+	FinamApiClient(const std::string& key, IExecutor& executor)
+		: key_(key)
+		, executor_(executor)
+		, auth_(key, executor)
+		, time_(auth_, executor){}
 
 	// Account service
 	void GetAccount();
@@ -38,7 +46,7 @@ public:
 	// Asset service
 	void Assets();
 	void AllAssets();
-	void Clock();
+	std::string Clock();
 	void GetAsset();
 	void GetConstituents();
 	void GetAssetParams();
@@ -54,7 +62,15 @@ public:
 	void GetAccountReportInfo();
 
 private:
-	void Auth();
-	std::string jwt_;
 	std::string key_;
+	IExecutor& executor_;
+
+	AccountService account_;
+	AssetService asset_;
+	AuthService auth_;
+	DataService data_;
+	MetricsService metrics_;
+	OrderService order_;
+	ReportService report_;
+	TimeService time_;
 };

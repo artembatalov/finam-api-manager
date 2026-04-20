@@ -1,9 +1,3 @@
-#include "finam-trade-api/client.h"
+#include "finam-api-manager/client.h"
+#include "finam-api-manager/models.h"
 
-class IExecutor {
-
-};
-
-class CprExecutor : IExecutor {
-
-};

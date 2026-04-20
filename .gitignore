@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# binaries
+*.o
+*.a
+*.so
+*.dylib
