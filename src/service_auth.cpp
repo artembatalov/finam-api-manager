@@ -6,6 +6,24 @@
 #include <string>
 using json = nlohmann::json;
 
+AuthService::AuthService(const std::string& key, IExecutor& executor)
+    : key_(key), executor_(executor) {
+    Auth();
+    TokenDetails();
+}
+
+std::string AuthService::GetToken() {
+    if (InvalidToken()) {
+        Auth();
+        TokenDetails();
+    }
+    return token_;
+}
+
+std::vector<int64_t> AuthService::GetAccountIds() const {
+    return info_.accounts;
+}
+
 QuoteDepth DefineQuoteLevel(const std::string& level) {
     if (level == "QUOTE_LEVEL_LAST") {
         return QuoteDepth::kLast;
@@ -55,4 +73,8 @@ void AuthService::TokenDetails() {
         };
         info_.permissions.push_back(permission);
     }
+}
+
+bool AuthService::InvalidToken() {
+    return false;
 }

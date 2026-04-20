@@ -4,7 +4,7 @@ class AssetService {
 public:
     void Assets();
     void AllAssets();
-    void Clock();
+    std::string Clock();
     void GetAsset();
     void GetConstituents();
     void GetAssetParams();

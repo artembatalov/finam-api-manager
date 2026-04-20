@@ -1,20 +1,19 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "models.h"
 #include "executor.h"
 
 class AuthService {
 public:
-    AuthService(const std::string& key, IExecutor& executor)
-        : key_(key), executor_(executor) {}
+    AuthService(const std::string& key, IExecutor& executor);
+    std::string GetToken();
+    std::vector<int64_t> GetAccountIds() const;
 
-    std::string GetToken() const {
-        // updating mechanism...
-        return token_;
-    }
 private:
     void Auth();
     void TokenDetails();
+    bool InvalidToken();
 
     IExecutor& executor_;
     std::string token_;

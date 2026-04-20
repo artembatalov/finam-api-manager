@@ -16,6 +16,7 @@ add_library(finam-api-manager src/client.cpp
         src/service_metrics.cpp
         src/service_order.cpp
         src/service_report.cpp
+        src/service_time.cpp
 )
 
 target_include_directories(finam-api-manager PUBLIC ${PROJECT_SOURCE_DIR}/include)
@@ -30,6 +31,7 @@ add_executable(example examples/main.cpp
         include/finam-api-manager/service_metrics.h
         include/finam-api-manager/service_auth.h
         include/finam-api-manager/service_report.h
+        include/finam-api-manager/service_time.h
 )
 target_link_libraries(example PRIVATE finam-api-manager)
 
