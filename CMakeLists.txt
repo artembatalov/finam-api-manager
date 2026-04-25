@@ -1,10 +1,37 @@
-cmake_minimum_required(VERSION 4.0.0)
-set(CMAKE_CXX_STANDARD 17)
+cmake_minimum_required(VERSION 3.20)
+
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CPR_USE_SYSTEM_CURL ON)
+set(BUILD_TZ_LIB ON CACHE BOOL "Build tz library")
+
+option(ENABLE_TESTS "Enable tests" ON)
 
 project(finam-api-manager
         VERSION 1.0.0
         LANGUAGES CXX)
+
+include(FetchContent)
+
+FetchContent_Declare(
+        cpr
+        GIT_REPOSITORY https://github.com/libcpr/cpr.git
+        GIT_TAG 1.10.5
+)
+
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.11.3
+)
+
+FetchContent_Declare(
+        date
+        GIT_REPOSITORY https://github.com/HowardHinnant/date.git
+        GIT_TAG v3.0.4
+)
+
+FetchContent_MakeAvailable(cpr json date)
 
 add_library(finam-api-manager src/client.cpp
         src/executor.cpp
@@ -35,20 +62,9 @@ add_executable(example examples/main.cpp
 )
 target_link_libraries(example PRIVATE finam-api-manager)
 
-include(FetchContent)
+target_link_libraries(finam-api-manager PUBLIC cpr::cpr nlohmann_json::nlohmann_json date::date-tz)
 
-FetchContent_Declare(
-        cpr
-        GIT_REPOSITORY https://github.com/libcpr/cpr.git
-        GIT_TAG 1.10.5
-)
-
-FetchContent_Declare(
-        json
-        GIT_REPOSITORY https://github.com/nlohmann/json.git
-        GIT_TAG v3.11.3
-)
-
-FetchContent_MakeAvailable(cpr json)
-
-target_link_libraries(finam-api-manager PUBLIC cpr::cpr nlohmann_json::nlohmann_json)
+if(ENABLE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
