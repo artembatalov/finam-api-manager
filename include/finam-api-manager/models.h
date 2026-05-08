@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "time.h"
 
 enum class RequestType {kGet, kPost, kPut, kPatch, kDelete};
 
@@ -20,8 +21,8 @@ struct Permission {
 };
 
 struct TokenInfo {
-    std::string created_at;
-    std::string expires_at;
+    Time created_at;
+    Time expires_at;
     std::vector<Permission> permissions;
     std::vector<int64_t> accounts;
     bool readonly;

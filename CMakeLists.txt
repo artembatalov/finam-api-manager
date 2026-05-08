@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CPR_USE_SYSTEM_CURL ON)
 set(BUILD_TZ_LIB ON CACHE BOOL "Build tz library")
@@ -44,6 +44,7 @@ add_library(finam-api-manager src/client.cpp
         src/service_order.cpp
         src/service_report.cpp
         src/service_time.cpp
+        src/time.cpp
 )
 
 target_include_directories(finam-api-manager PUBLIC ${PROJECT_SOURCE_DIR}/include)
