@@ -11,17 +11,24 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(
-        lib_tests
-        time_tests.cpp
+        tests
+        account_tests.cpp
+        asset_tests.cpp
+        auth_tests.cpp
+        data_tests.cpp
+        metrics_tests.cpp
         models_tests.cpp
+        order_tests.cpp
+        report_tests.cpp
+        time_tests.cpp
 )
 
-target_include_directories(lib_tests PRIVATE
+target_include_directories(tests PRIVATE
         ${CMAKE_SOURCE_DIR}/lib
 )
 
 target_link_libraries(
-        lib_tests
+        tests
         PRIVATE
         GTest::gtest
         GTest::gtest_main
@@ -29,4 +36,4 @@ target_link_libraries(
 )
 
 include(GoogleTest)
-gtest_discover_tests(lib_tests)
+gtest_discover_tests(tests)

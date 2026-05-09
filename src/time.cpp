@@ -1,23 +1,18 @@
-#pragma once
 #include <string>
-#include <chrono>
-#include <sstream>
-#include <date/date.h>
 #include "finam-api-manager/time.h"
-using namespace std::chrono;
+#include "finam-api-manager/executor.h"
 
-Time::Time(const std::string& iso8601) {
-    std::istringstream ss{iso8601};
-    date::from_stream(ss, "%FT%TZ", time_);
-}
+TimeService::TimeService(AuthService& auth, Executor& executor)
+    : auth_(auth), executor_(executor) {}
 
-std::string Time::iso8501() {
-    return std::format("{:%FT%TZ}", std::chrono::time_point_cast<std::chrono::seconds>(time_));
-}
 
-Time Time::now() {
-    TimePoint time = std::chrono::system_clock::now();
-    Time now;
-    now.time_ = time;
-    return now;
+std::string TimeService::ServerTime(const std::string& account_id) {
+    Request req = {
+        .url = "https://api.finam.ru/v1/accounts/" + account_id,
+        .type = RequestType::kGet,
+        .parameters = {},
+        .headers = {{"Authorization", "Bearer " + auth_.GetToken()}},
+    };
+    auto res = executor_.Execute(req);
+    return res["timestamp"];
 }

@@ -1,18 +1,14 @@
 #pragma once
-#include <iostream>
 #include <string>
-#include <chrono>
+#include <string>
+#include "auth.h"
 
-class Time {
+class TimeService {
 public:
-    using TimePoint = std::chrono::system_clock::time_point;
-
-    Time() = default;
-    Time(const std::string& iso8601);
-    std::string iso8501();
-    Time now();
-
-    auto operator<=>(const Time& other) const = default;
+    TimeService(AuthService& auth, Executor& executor);
+    std::string ServerTime(const std::string& account_id);
+    std::string MachineTime() const;
 private:
-    TimePoint time_;
+    AuthService& auth_;
+    Executor& executor_;
 };

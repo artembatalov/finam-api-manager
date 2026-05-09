@@ -3,13 +3,13 @@
 #include "finam-api-manager/models.h"
 using json = nlohmann::json;
 
-class IExecutor {
+class Executor {
 public:
     virtual json Execute(const Request& req) =0;
-    virtual ~IExecutor() = default;
+    virtual ~Executor() = default;
 };
 
-class CprExecutor : public IExecutor {
+class CprExecutor : public Executor {
 public:
     json Execute(const Request& req) override;
 };

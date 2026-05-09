@@ -1,76 +1,32 @@
 #pragma once
-
-#include <iostream>
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <vector>
-#include <stdexcept>
 #include "executor.h"
-#include "service_account.h"
-#include "service_asset.h"
-#include "service_auth.h"
-#include "service_data.h"
-#include "service_metrics.h"
-#include "service_order.h"
-#include "service_report.h"
-#include "service_time.h"
+#include "account.h"
+#include "asset.h"
+#include "auth.h"
+#include "data.h"
+#include "metrics.h"
+#include "order.h"
+#include "report.h"
+#include "time.h"
 using json = nlohmann::json;
 
-class FinamApiClient {
+class FinamSession {
 public:
-	FinamApiClient(const std::string& key, IExecutor& executor)
-		: key_(key)
-		, executor_(executor)
-		, auth_(key, executor)
-		, time_(auth_, executor){}
+	FinamSession(const std::string& key, Executor& executor);
 
-	// Account service
-	void GetAccount();
-	void Trades();
-	void Transactions();
-
-	// Orders service
-	void GetOrders();
-	void PlaceOrder();
-	void GetOrder();
-	void CancelOrder();
-	void PlaceSLTPOrder();
-
-	// Market data service
-	void Bars();
-	void OrderBook();
-	void LastQuote();
-	void LatestTrades();
-
-	// Asset service
-	void Assets();
-	void AllAssets();
-	std::string Clock();
-	void GetAsset();
-	void GetConstituents();
-	void GetAssetParams();
-	void Schedule();
-	void OptionsChain();
-	void Exchanges();
-
-	// Usage metrics service
-	void GetUsageMetrics();
-
-	// Report service
-	void CreateAccountReport();
-	void GetAccountReportInfo();
+	AccountService account;
+	MetricsService metrics;
+	ReportService  report;
+	OrderService   order;
+	AssetService   asset;
+	DataService    data;
+	TimeService    time;
 
 private:
 	std::string key_;
-	IExecutor& executor_;
-
-	AccountService account_;
-	AssetService asset_;
+	Executor& executor_;
 	AuthService auth_;
-	DataService data_;
-	MetricsService metrics_;
-	OrderService order_;
-	ReportService report_;
-	TimeService time_;
 };

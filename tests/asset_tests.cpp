@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
 
-TEST(Time, Temp) {
+TEST(Asset, Temp) {
     ASSERT_TRUE(true);
 }
