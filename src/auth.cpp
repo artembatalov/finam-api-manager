@@ -1,22 +1,23 @@
-#include "finam-api-manager/service_auth.h"
+#include "finam-api-manager/auth.h"
 #include "finam-api-manager/models.h"
+#include "finam-api-manager/time.h"
 #include <nlohmann/json.hpp>
 #include <cstdint>
 #include <stdexcept>
 #include <string>
 using json = nlohmann::json;
 
-AuthService::AuthService(const std::string& key, IExecutor& executor)
+AuthService::AuthService(const std::string& key, Executor& executor)
     : key_(key), executor_(executor) {
     Auth();
     TokenDetails();
 }
 
 std::string AuthService::GetToken() {
-    if (InvalidToken()) {
+    //if (info_.expires_at.now() > info_.expires_at) {
         Auth();
         TokenDetails();
-    }
+    //}
     return token_;
 }
 
@@ -58,8 +59,8 @@ void AuthService::TokenDetails() {
         .headers = {{"Content-Type", "application/json"}}
     };
     auto res = executor_.Execute(req);
-    info_.created_at = res["created_at"];
-    info_.expires_at = res["expires_at"];
+    info_.created_at = Time(res["created_at"]);
+    info_.expires_at = Time(res["expires_at"]);
     info_.readonly = res["readonly"];
     for (size_t i = 0; i < res["account_ids"].size(); i++) {
         int64_t account = std::stoll(res["account_ids"][i].get<std::string>());
@@ -73,8 +74,4 @@ void AuthService::TokenDetails() {
         };
         info_.permissions.push_back(permission);
     }
-}
-
-bool AuthService::InvalidToken() {
-    return false;
 }

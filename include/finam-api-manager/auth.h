@@ -6,7 +6,7 @@
 
 class AuthService {
 public:
-    AuthService(const std::string& key, IExecutor& executor);
+    AuthService(const std::string& key, Executor& executor);
     std::string GetToken();
     std::vector<int64_t> GetAccountIds() const;
 
@@ -15,7 +15,7 @@ private:
     void TokenDetails();
     bool InvalidToken();
 
-    IExecutor& executor_;
+    Executor& executor_;
     std::string token_;
     std::string key_;
     TokenInfo info_;

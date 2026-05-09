@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
-#include "service_auth.h"
+#include <string>
+#include "auth.h"
 
 class TimeService {
 public:
-    TimeService(AuthService& auth, IExecutor& executor);
+    TimeService(AuthService& auth, Executor& executor);
     std::string ServerTime(const std::string& account_id);
+    std::string MachineTime() const;
 private:
     AuthService& auth_;
-    IExecutor& executor_;
+    Executor& executor_;
 };

@@ -1,8 +1,8 @@
 #include <string>
-#include "finam-api-manager/service_time.h"
+#include "finam-api-manager/time.h"
 #include "finam-api-manager/executor.h"
 
-TimeService::TimeService(AuthService& auth, IExecutor& executor)
+TimeService::TimeService(AuthService& auth, Executor& executor)
     : auth_(auth), executor_(executor) {}
 
 

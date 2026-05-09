@@ -51,6 +51,7 @@ cpr::Parameters GetParameters(const Request& req) {
     for (auto& pair : req.parameters) {
         parameters.Add({pair.first, pair.second});
     }
+    return parameters;
 }
 
 json ExecuteGet(const Request& req) {
