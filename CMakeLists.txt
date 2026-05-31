@@ -65,7 +65,6 @@ if(ENABLE_TESTS)
 endif()
 
 if(ENABLE_INTERNAL)
-    enable_testing()
     add_subdirectory(internal)
 endif()
 
