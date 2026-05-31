@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CPR_USE_SYSTEM_CURL ON)
 set(BUILD_TZ_LIB ON CACHE BOOL "Build tz library")
 
-option(ENABLE_TESTS "Enable tests" ON)
-option(ENABLE_EXAMPLES "Enable examples" ON)
+option(ENABLE_TESTS "Enable tests" On)
+option(ENABLE_EXAMPLES "Enable examples" On)
+option(ENABLE_INTERNAL "Enable internal" On)
 
 project(finam-api-manager
         VERSION 1.0.0
@@ -33,6 +34,11 @@ FetchContent_Declare(
         GIT_TAG v3.0.4
 )
 
+set(ADDRESS_SANITIZER_AVAILABLE OFF CACHE INTERNAL "" FORCE)
+set(THREAD_SANITIZER_AVAILABLE OFF CACHE INTERNAL "" FORCE)
+set(MEMORY_SANITIZER_AVAILABLE OFF CACHE INTERNAL "" FORCE)
+set(UNDEFINED_SANITIZER_AVAILABLE OFF CACHE INTERNAL "" FORCE)
+
 FetchContent_MakeAvailable(cpr json date)
 
 add_library(finam-api-manager 
@@ -56,6 +62,11 @@ target_link_libraries(finam-api-manager PUBLIC cpr::cpr nlohmann_json::nlohmann_
 if(ENABLE_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+if(ENABLE_INTERNAL)
+    enable_testing()
+    add_subdirectory(internal)
 endif()
 
 if(ENABLE_EXAMPLES)
