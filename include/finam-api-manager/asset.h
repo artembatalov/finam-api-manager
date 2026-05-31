@@ -1,22 +1,26 @@
 #pragma once
 #include <string>
+#include <vector>
+
 #include "auth.h"
 #include "executor.h"
 
 class AssetService {
-public:
+   public:
     AssetService(AuthService& auth, Executor& executor);
 
-    void Assets();
-    void AllAssets();
-    std::string Clock();
+    std::vector<Asset> Assets();
+    std::vector<Asset> AllAssets(std::string cursor, bool only_active,
+                                 bool only_disabled);  // тут будет пагинация
+    Time Clock();
     void GetAsset();
     void GetConstituents();
     void GetAssetParams();
-    void Schedule();
+    Schedule GetSchedule(std::string symbol);
     void OptionsChain();
-    void Exchanges();
-private:
+    std::vector<Exchange> Exchanges();
+
+   private:
     AuthService& auth_;
     Executor& executor_;
 };
