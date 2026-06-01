@@ -8,7 +8,7 @@ set(BUILD_TZ_LIB ON CACHE BOOL "Build tz library")
 
 option(ENABLE_TESTS "Enable tests" On)
 option(ENABLE_EXAMPLES "Enable examples" On)
-option(ENABLE_INTERNAL "Enable internal" On)
+option(ENABLE_INTERNAL "Enable internal" Off)
 
 project(finam-api-manager
         VERSION 1.0.0
@@ -65,7 +65,6 @@ if(ENABLE_TESTS)
 endif()
 
 if(ENABLE_INTERNAL)
-    enable_testing()
     add_subdirectory(internal)
 endif()
 

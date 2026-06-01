@@ -1,12 +1,15 @@
 #pragma once
 #include <cpr/cpr.h>
+#include <memory.h>
+
 #include <nlohmann/json.hpp>
 #include <string>
-#include "executor.h"
+
 #include "account.h"
 #include "asset.h"
 #include "auth.h"
 #include "data.h"
+#include "executor.h"
 #include "metrics.h"
 #include "order.h"
 #include "report.h"
@@ -14,19 +17,22 @@
 using json = nlohmann::json;
 
 class FinamSession {
-public:
-	FinamSession(const std::string& key, Executor& executor);
+   public:
+    explicit FinamSession(const std::string& key)
+        : FinamSession(key, std::make_unique<CprExecutor>()) {}
 
-	AccountService account;
-	MetricsService metrics;
-	ReportService  report;
-	OrderService   order;
-	AssetService   asset;
-	DataService    data;
-	TimeService    time;
+    FinamSession(std::unique_ptr<Executor> executor);
+    AccountService account;
+    MetricsService metrics;
+    ReportService report;
+    OrderService order;
+    AssetService asset;
+    DataService data;
+    TimeService time;
 
-private:
-	std::string key_;
-	Executor& executor_;
-	AuthService auth_;
+   private:
+    FinamSession(const std::string& key, std::unique_ptr<Executor> executor);
+    std::string key_;
+    std::unique_ptr<Executor> executor_;
+    AuthService auth_;
 };

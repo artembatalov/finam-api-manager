@@ -105,4 +105,97 @@ struct Trade {
 
 // AccountService : Transaction
 
-struct Transaction {};
+struct Change {
+    std::string currency_code;
+    int64_t nanos;
+    int64_t units;
+};
+
+struct Transaction {
+    std::string category;
+    Change change;
+    int64_t id;
+    std::string symbol;
+    Time time;
+    std::string transaction_category;
+    std::string transaction_name;
+};
+
+// AssetService : Asset
+
+enum class AssetType {
+    kBonds,
+    kCurrencies,
+    kEquities,
+    kFunds,
+    kFutures,
+    kIndices,
+    kOptions,
+    kSpreads,
+    kSwaps,
+    kOther
+};
+
+struct Asset {
+    int64_t id;
+    bool is_archived;
+    std::string isin;
+    std::string mic;
+    std::string name;
+    std::string symbol;
+    std::string ticker;
+    AssetType type;
+
+    void SetType(std::string type_str) {
+        if (type_str == "BONDS") {
+            type = AssetType::kBonds;
+
+        } else if (type_str == "CURRENCIES") {
+            type = AssetType::kCurrencies;
+
+        } else if (type_str == "EQUITIES") {
+            type = AssetType::kEquities;
+
+        } else if (type_str == "FUNDS") {
+            type = AssetType::kFunds;
+
+        } else if (type_str == "FUTURES") {
+            type = AssetType::kFutures;
+
+        } else if (type_str == "INDICES") {
+            type = AssetType::kIndices;
+
+        } else if (type_str == "OPTIONS") {
+            type = AssetType::kOptions;
+
+        } else if (type_str == "SPREADS") {
+            type = AssetType::kSpreads;
+
+        } else if (type_str == "SWAPS") {
+            type = AssetType::kSwaps;
+
+        } else {
+            type = AssetType::kOther;
+        }
+    }
+};
+
+// AssetService : Schedule
+
+struct Session {
+    std::string type;
+    Time start;
+    Time end;
+};
+
+struct Schedule {
+    std::string symbol;
+    std::vector<Session> sessions;
+};
+
+// AssetService : Exchanges
+
+struct Exchange {
+    std::string mic;
+    std::string name;
+};

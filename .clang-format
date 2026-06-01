@@ -1,0 +1,8 @@
+BasedOnStyle: Google
+IndentWidth: 4
+ColumnLimit: 100
+PointerAlignment: Left        # int* x vs int *x vs int * x
+AllowShortFunctionsOnASingleLine: Empty   # пустые функции в одну строку
+BraceWrapping:
+  AfterFunction: true         # { на новой строке после функции
+SortIncludes: true            # сортировать #include
