@@ -19,8 +19,8 @@ Account AccountService::GetAccount(int64_t account_id) {
                   .units = std::stoi(c["units"].get<std::string>())};
         account.cash.push_back(cash);
     }
-
     // ...
+    return account;
 }
 
 std::vector<Trade> AccountService::Trades(int64_t account_id, size_t limit, Time start, Time end) {

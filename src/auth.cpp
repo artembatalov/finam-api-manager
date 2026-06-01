@@ -10,12 +10,20 @@ using json = nlohmann::json;
 AuthService::AuthService(const std::string& key, Executor& executor)
     : key_(key), executor_(executor) {}
 
+AuthService::AuthService(Executor& executor) : executor_(executor), disabled_(true) {}
+
 std::string AuthService::GetToken() {
+    if (disabled_) {
+        return "";
+    }
     Init();
     return token_;
 }
 
 std::vector<int64_t> AuthService::GetAccountIds() {
+    if (disabled_) {
+        return std::vector<int64_t>{};
+    }
     Init();
     return info_.accounts;
 }
