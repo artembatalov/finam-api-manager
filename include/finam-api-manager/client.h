@@ -22,6 +22,14 @@ class FinamSession {
         : FinamSession(key, std::make_unique<CprExecutor>()) {}
 
     FinamSession(std::unique_ptr<Executor> executor);
+
+   private:
+    FinamSession(const std::string& key, std::unique_ptr<Executor> executor);
+    std::string key_;
+    std::unique_ptr<Executor> executor_;
+    AuthService auth_;
+
+   public:
     AccountService account;
     MetricsService metrics;
     ReportService report;
@@ -29,10 +37,4 @@ class FinamSession {
     AssetService asset;
     DataService data;
     TimeService time;
-
-   private:
-    FinamSession(const std::string& key, std::unique_ptr<Executor> executor);
-    std::string key_;
-    std::unique_ptr<Executor> executor_;
-    AuthService auth_;
 };

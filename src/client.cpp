@@ -7,23 +7,23 @@
 FinamSession::FinamSession(const std::string& key, std::unique_ptr<Executor> executor)
     : key_(key),
       executor_(std::move(executor)),
-      auth_(key, *executor),
-      account(auth_, *executor),
-      metrics(auth_, *executor),
-      report(auth_, *executor),
-      order(auth_, *executor),
-      asset(auth_, *executor),
-      data(auth_, *executor),
-      time(auth_, *executor) {}
+      auth_(key, *executor_),
+      account(auth_, *executor_),
+      metrics(auth_, *executor_),
+      report(auth_, *executor_),
+      order(auth_, *executor_),
+      asset(auth_, *executor_),
+      data(auth_, *executor_),
+      time(auth_, *executor_) {}
 
 FinamSession::FinamSession(std::unique_ptr<Executor> executor)
     : key_(""),
       executor_(std::move(executor)),
-      auth_(*executor),
-      account(auth_, *executor),
-      metrics(auth_, *executor),
-      report(auth_, *executor),
-      order(auth_, *executor),
-      asset(auth_, *executor),
-      data(auth_, *executor),
-      time(auth_, *executor) {}
+      auth_(*executor_),
+      account(auth_, *executor_),
+      metrics(auth_, *executor_),
+      report(auth_, *executor_),
+      order(auth_, *executor_),
+      asset(auth_, *executor_),
+      data(auth_, *executor_),
+      time(auth_, *executor_) {}

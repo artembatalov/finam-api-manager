@@ -63,7 +63,7 @@ void AuthService::TokenDetails() {
         int64_t account = std::stoll(res["account_ids"][i].get<std::string>());
         info_.accounts.push_back(account);
     }
-    for (size_t i = 0; i < res["md_permissions"]; i++) {
+    for (size_t i = 0; i < res["md_permissions"].size(); i++) {
         Permission permission = {
             .delay_minutes = res["md_permissions"][i]["delay_minutes"],
             .mic = res["md_permissions"][i]["mic"],
