@@ -1,7 +1,10 @@
 #pragma once
 #include <chrono>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+using json = nlohmann::json;
 
 class Time {
    public:
@@ -9,7 +12,7 @@ class Time {
 
     Time() = default;
     Time(const std::string& iso8601);
-    std::string iso8501();
+    std::string iso8501() const;
     Time now();
 
     auto operator<=>(const Time& other) const = default;
@@ -23,6 +26,7 @@ enum class RequestType { kGet, kPost, kPut, kPatch, kDelete };
 struct Request {
     std::string url;
     RequestType type;
+    json body = json::object();
     std::vector<std::pair<std::string, std::string>> parameters;
     std::vector<std::pair<std::string, std::string>> headers;
 };
@@ -198,4 +202,112 @@ struct Schedule {
 struct Exchange {
     std::string mic;
     std::string name;
+};
+
+// ReportService
+
+enum class ReportType { kReportFormUnknown, kReportFormShort, kReportFormLong };
+
+std::string ReportTypeToString(ReportType type);
+ReportType StringToReportType(std::string type);
+
+enum class ReportStatus { kNotFound, kPending, kInProgress, kSuccess, kError };
+
+ReportStatus StringToStatus(std::string str);
+
+struct ReportData {
+    int64_t report_id;
+    ReportStatus status;
+    Time date_begin;
+    Time date_end;
+    ReportType type;
+    int64_t account_id;
+    std::string url;
+};
+
+// DataService (MarketDataService)
+
+enum class TimeFrame {
+    kM1,
+    kM5,
+    kM15,
+    kM30,
+    kH1,
+    kH2,
+    kH4,
+    kH8,
+    kD,
+    kW,
+    kMN,
+    kQR,
+    kUnspecified
+};
+
+std::string TimeFrameToString(TimeFrame timeframe);
+
+// DataService : Bars
+
+struct Bar {
+    Time timestamp;
+    double open;
+    double high;
+    double low;
+    double close;
+    double volume;
+};
+
+// DataService : LastQuote
+
+struct Quote {
+    std::string symbol;
+    Time timestamp;
+    double ask;
+    double ask_size;
+    double bid;
+    double bid_size;
+    double last;
+    double last_size;
+    double volume;
+    double open;
+    double high;
+    double low;
+    double close;
+    double change;
+};
+
+// DataService : OrderBook
+
+struct OrderBookRow {
+    double price;
+    double sell_size;
+    double buy_size;
+};
+
+struct OrderBook {
+    std::string symbol;
+    std::vector<OrderBookRow> rows;
+};
+
+// DataService : LatestTrades
+
+struct LatestTrade {
+    std::string trade_id;
+    std::string mpid;
+    Time timestamp;
+    double price;
+    double size;
+    std::string side;
+};
+
+// MetricsService : UsageMetrics
+
+struct Quota {
+    std::string name;
+    int64_t limit;
+    int64_t remaining;
+    Time reset_time;
+};
+
+struct UsageMetrics {
+    std::vector<Quota> quotas;
 };

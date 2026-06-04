@@ -1,12 +1,15 @@
-#include <nlohmann/json.hpp>
-#include <cpr/cpr.h>
-#include <stdexcept>
 #include "finam-api-manager/executor.h"
+
+#include <cpr/cpr.h>
+
+#include <nlohmann/json.hpp>
+#include <stdexcept>
+
 #include "finam-api-manager/models.h"
 using json = nlohmann::json;
 
 void CheckStatus(int32_t status_code) {
-    switch(status_code) {
+    switch (status_code) {
         case 200: {
             return;
         }
@@ -17,21 +20,30 @@ void CheckStatus(int32_t status_code) {
             throw std::runtime_error("GetJwtToken: 404 Account not found in token!");
         }
         case 429: {
-            throw std::runtime_error("GetJwtToken: 429 Too many requests. The available limit is 200 requests per minute!");
+            throw std::runtime_error(
+                "GetJwtToken: 429 Too many requests. The available limit is 200 requests per "
+                "minute!");
         }
         case 500: {
-            throw std::runtime_error("GetJwtToken: 500 Internal Service Error. Please try again later!");
+            throw std::runtime_error(
+                "GetJwtToken: 500 Internal Service Error. Please try again later!");
         }
         case 503: {
-            throw std::runtime_error("GetJwtToken: 503 Service is currently unavailable. Please try again later!");
+            throw std::runtime_error(
+                "GetJwtToken: 503 Service is currently unavailable. Please try again later!");
         }
         case 504: {
-            throw std::runtime_error("GetJwtToken: 504 The deadline expired before the operation was completed!");
+            throw std::runtime_error(
+                "GetJwtToken: 504 The deadline expired before the operation was completed!");
         }
         default: {
             throw std::runtime_error("GetJwtToken: default An unexpected error response!");
         }
     }
+}
+
+cpr::Body GetBody(const Request& req) {
+    return cpr::Body{req.body.dump()};
 }
 
 cpr::Url GetUrl(const Request& req) {
@@ -55,48 +67,32 @@ cpr::Parameters GetParameters(const Request& req) {
 }
 
 json ExecuteGet(const Request& req) {
-    cpr::Response r = cpr::Get(
-        GetUrl(req),
-        GetHeaders(req),
-        GetParameters(req)
-    );
+    cpr::Response r = cpr::Get(GetUrl(req), GetHeaders(req), GetParameters(req), GetBody(req));
     CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
 json ExecutePost(const Request& req) {
-    cpr::Response r = cpr::Post(
-        GetUrl(req),
-        GetHeaders(req),
-        GetParameters(req)
-    );
+    cpr::Response r = cpr::Post(GetUrl(req), GetHeaders(req), GetParameters(req), GetBody(req));
+    CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
 json ExecutePut(const Request& req) {
-    cpr::Response r = cpr::Put(
-        GetUrl(req),
-        GetHeaders(req),
-        GetParameters(req)
-    );
+    cpr::Response r = cpr::Put(GetUrl(req), GetHeaders(req), GetParameters(req), GetBody(req));
+    CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
 json ExecutePatch(const Request& req) {
-    cpr::Response r = cpr::Patch(
-        GetUrl(req),
-        GetHeaders(req),
-        GetParameters(req)
-    );
+    cpr::Response r = cpr::Patch(GetUrl(req), GetHeaders(req), GetParameters(req), GetBody(req));
+    CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
 json ExecuteDelete(const Request& req) {
-    cpr::Response r = cpr::Delete(
-        GetUrl(req),
-        GetHeaders(req),
-        GetParameters(req)
-    );
+    cpr::Response r = cpr::Delete(GetUrl(req), GetHeaders(req), GetParameters(req));
+    CheckStatus(r.status_code);
     return json::parse(r.text);
 }
 
@@ -116,4 +112,3 @@ json CprExecutor::Execute(const Request& req) {
             throw std::runtime_error("CprExecutor::Execute: Undefined request type");
     }
 }
-

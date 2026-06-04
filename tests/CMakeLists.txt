@@ -20,7 +20,6 @@ add_executable(
         models_tests.cpp
         order_tests.cpp
         report_tests.cpp
-        time_tests.cpp
 )
 
 target_include_directories(tests PRIVATE

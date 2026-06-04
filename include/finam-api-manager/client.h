@@ -36,5 +36,4 @@ class FinamSession {
     OrderService order;
     AssetService asset;
     DataService data;
-    TimeService time;
 };
