@@ -7,7 +7,7 @@ set(CPR_USE_SYSTEM_CURL ON)
 set(BUILD_TZ_LIB ON CACHE BOOL "Build tz library")
 
 option(ENABLE_TESTS "Enable tests" On)
-option(ENABLE_EXAMPLES "Enable examples" On)
+option(ENABLE_EXAMPLES "Enable examples" Off)
 option(ENABLE_INTERNAL "Enable internal" Off)
 
 project(finam-api-manager
@@ -52,7 +52,6 @@ add_library(finam-api-manager
         src/metrics.cpp
         src/order.cpp
         src/report.cpp
-        src/time.cpp
 )
 
 target_include_directories(finam-api-manager PUBLIC ${PROJECT_SOURCE_DIR}/include)
