@@ -50,10 +50,10 @@ All services are accessed as public members of `FinamSession`.
 |---|---|---|
 | `session.account` | Portfolio, trades, transactions | In progress |
 | `session.asset` | Assets, exchanges, schedules | In progress |
-| `session.data` | Bars, order book, quotes | Stub |
+| `session.data` | Bars, quotes, order book, trades | In progress |
 | `session.order` | Place / cancel orders | Stub |
-| `session.metrics` | API usage metrics | Stub |
-| `session.report` | Account reports | Stub |
+| `session.metrics` | API usage metrics | In progress |
+| `session.report` | Account reports | In progress |
 | `session.time` | Server / machine time | In progress |
 
 ### AccountService
@@ -71,6 +71,39 @@ std::vector<Asset> assets  = session.asset.Assets();
 std::vector<Exchange> exch = session.asset.Exchanges();
 Schedule sched             = session.asset.GetSchedule("SBER@MISX");
 Time server_time           = session.asset.Clock();
+```
+
+### DataService (market data)
+
+```cpp
+std::vector<Bar> bars = session.data.Bars("SBER@MISX", TimeFrame::kM1,
+                                          Time("2026-06-01T10:00:00Z"),
+                                          Time("2026-06-01T11:00:00Z"));
+Quote q                 = session.data.LastQuote("SBER@MISX");
+OrderBook book          = session.data.GetOrderBook("SBER@MISX");
+std::vector<LatestTrade> trades = session.data.LatestTrades("SBER@MISX");
+```
+
+`TimeFrame` covers `kM1`–`kM30`, `kH1`–`kH8`, `kD`, `kW`, `kMN`, `kQR`.
+
+### MetricsService
+
+```cpp
+UsageMetrics metrics = session.metrics.GetUsageMetrics();
+for (const Quota& q : metrics.quotas) {
+    // q.name, q.limit, q.remaining, q.reset_time
+}
+```
+
+### ReportService
+
+```cpp
+int64_t report_id = session.report.CreateAccountReport(
+    Time("2026-01-01T15:30:00Z"), Time("2026-06-01T15:30:00Z"),
+    ReportType::kReportFormShort, account_id);
+
+ReportData info = session.report.GetAccountReportInfo(report_id);
+// info.status, info.type, info.date_begin, info.date_end, info.url
 ```
 
 ### TimeService

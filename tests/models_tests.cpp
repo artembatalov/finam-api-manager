@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <finam-api-manager/time.h>
+#include <finam-api-manager/models.h>
 
 TEST(Time, Iso8501) {
     std::string time = "2026-05-08T19:51:03Z";

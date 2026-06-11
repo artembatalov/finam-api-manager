@@ -13,8 +13,7 @@ FinamSession::FinamSession(const std::string& key, std::unique_ptr<Executor> exe
       report(auth_, *executor_),
       order(auth_, *executor_),
       asset(auth_, *executor_),
-      data(auth_, *executor_),
-      time(auth_, *executor_) {}
+      data(auth_, *executor_) {}
 
 FinamSession::FinamSession(std::unique_ptr<Executor> executor)
     : key_(""),
@@ -25,5 +24,4 @@ FinamSession::FinamSession(std::unique_ptr<Executor> executor)
       report(auth_, *executor_),
       order(auth_, *executor_),
       asset(auth_, *executor_),
-      data(auth_, *executor_),
-      time(auth_, *executor_) {}
+      data(auth_, *executor_){}
